@@ -68,6 +68,7 @@ public class SpringConfig {
     public MapperScannerConfigurer getMapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setBasePackage("com.chrt.ssm.mapper");
+        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return mapperScannerConfigurer;
     }
 
@@ -76,11 +77,11 @@ public class SpringConfig {
      * @param dataSource 数据源
      * @return 工厂类
      */
-    @Bean
+    @Bean("sqlSessionFactory")
     public SqlSessionFactoryBean getSqlSessionFactory(DataSource dataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        URL resource = SpringConfig.class.getClassLoader().getResource("mybatis-config.xml");
-        sqlSessionFactoryBean.setConfigLocation(new FileUrlResource(Objects.requireNonNull(resource)));
+        URL configLocation = SpringConfig.class.getClassLoader().getResource("mybatis-config.xml");
+        sqlSessionFactoryBean.setConfigLocation(new FileUrlResource(Objects.requireNonNull(configLocation)));
         sqlSessionFactoryBean.setDataSource(dataSource);
         return sqlSessionFactoryBean;
     }

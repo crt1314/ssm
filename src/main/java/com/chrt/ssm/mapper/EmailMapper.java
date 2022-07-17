@@ -18,7 +18,7 @@ public interface EmailMapper {
      * @return 邮箱列表
      */
     @Select(
-        "select id, AES_DECRYPT(email, #{username}) as email, user_id from jfm_email where isValid = 1 and user_id = #{user_id}"
+        "select id, AES_DECRYPT(email, #{username}) as email from jfm_email where isValid = 1 and user_id = #{user_id}"
     )
     List<Email> findByUserId(@Param("user_id") Integer user_id, @Param("username") String username);
 

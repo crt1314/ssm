@@ -20,8 +20,4 @@ public class Email implements Serializable {
      * 邮箱信息
      */
     private String email;
-    /**
-     * 邮箱关联用户唯一标识
-     */
-    private Integer user_id;
 }
