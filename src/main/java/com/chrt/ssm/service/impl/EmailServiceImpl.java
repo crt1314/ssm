@@ -20,10 +20,11 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * 邮箱服务实现类
+ * 设置EmailException回滚
  */
 @Service
 @PropertySource("classpath:mail.properties")
-@Transactional
+@Transactional(rollbackFor = {EmailException.class})
 public class EmailServiceImpl implements EmailService {
 
     /**
@@ -54,21 +55,24 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(context, true);
             javaMailSender.send(msg);
         } catch (MessagingException e) {
-            EmailExceptionEnumerationWrapper.wrapperEmailException(EmailExceptionEnumeration.EMAIL_FAILED_TO_SET_MESSAGE, e);
+            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_SET_MESSAGE, e);
         } catch (MailException e) {
-            EmailExceptionEnumerationWrapper.wrapperEmailException(EmailExceptionEnumeration.EMAIL_FAILED_TO_SEND, e);
+            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_SEND, e);
         }
     }
 
     @Override
-    public void insertMail(String email, Integer user_id, String username) throws EmailException {
-        if (EmailHelper.isEmailMeetsRequirements(email)) {
+    public void insertMail(String email, String choice, Integer user_id, String username) throws EmailException {
+        Boolean flag = EmailHelper.isEmailMeetsRequirements(email, choice);
+        if (flag != null && flag) {
             Integer count = emailMapper.insertEmail(email, username, user_id);
             if (count == 0) {
-                EmailExceptionEnumerationWrapper.wrapperEmailException(EmailExceptionEnumeration.EMAIL_FAILED_TO_INSERT);
+                EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_INSERT);
             }
+        } else if (flag != null){
+            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_MEET_REQUIREMENTS);
         } else {
-            EmailExceptionEnumerationWrapper.wrapperEmailException(EmailExceptionEnumeration.EMAIL_FAILED_TO_MEET_REQUIREMENTS);
+            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.WRONG_CHOICE);
         }
     }
 }
