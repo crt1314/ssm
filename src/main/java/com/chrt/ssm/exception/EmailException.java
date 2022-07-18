@@ -3,7 +3,7 @@ package com.chrt.ssm.exception;
 /**
  * 邮箱异常
  */
-public class EmailException extends Exception {
+public class EmailException extends RuntimeException {
     public EmailException(String message) {
         super(message);
     }

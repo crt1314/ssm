@@ -56,6 +56,7 @@ public class SpringConfig {
             javaMailSender.setJavaMailProperties(javaMailProperties);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to initial JavaMailSender", e);
         }
         return javaMailSender;
     }
@@ -109,6 +110,7 @@ public class SpringConfig {
             dataSource = DruidDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to initial DataSource", e);
         }
         return dataSource;
     }

@@ -5,26 +5,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
- * 用于控制首页位置以及hello页面
+ * 用于控制hello页面
  */
 @Controller
-public class IndexController {
-    /**
-     * 配置首页位置
-     * @return 首页位置
-     */
-    @RequestMapping("/")
-    public String toIndex() {
-        return "index";
-    }
-
+public class HelloController {
+    private final AtomicLong counter = new AtomicLong();
     /**
      * 配置hello页面位置
      * @return hello页面位置
      */
     @RequestMapping("/hello")
     public String toHello(Model model, @Nullable String name) {
+        model.addAttribute("id", counter.incrementAndGet());
         if (name == null) {
             model.addAttribute("name", "无名氏");
         } else {
