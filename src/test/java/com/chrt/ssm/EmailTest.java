@@ -3,6 +3,7 @@ package com.chrt.ssm;
 import com.chrt.ssm.config.SpringConfig;
 import com.chrt.ssm.mapper.EmailMapper;
 import com.chrt.ssm.service.api.EmailService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,4 +24,9 @@ public class EmailTest {
 
     @Autowired
     private EmailService emailService;
+
+    @Test
+    public void testService() {
+        emailService.updateMail("123456@qq.com", "QQ", 1, "root");
+    }
 }

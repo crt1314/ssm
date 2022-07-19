@@ -3,8 +3,6 @@ package com.chrt.ssm.service.impl;
 import com.chrt.ssm.exception.EmailException;
 import com.chrt.ssm.mapper.EmailMapper;
 import com.chrt.ssm.service.api.EmailService;
-import com.chrt.ssm.util.EmailExceptionEnumeration;
-import com.chrt.ssm.util.EmailExceptionEnumerationWrapper;
 import com.chrt.ssm.util.EmailHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,24 +53,19 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(context, true);
             javaMailSender.send(msg);
         } catch (MessagingException e) {
-            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_SET_MESSAGE, e);
+            EmailHelper.throwEmailException(1, e);
         } catch (MailException e) {
-            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_SEND, e);
+            EmailHelper.throwEmailException(0, e);
         }
     }
 
     @Override
     public void insertMail(String email, String choice, Integer user_id, String username) throws EmailException {
-        Boolean flag = EmailHelper.isEmailMeetsRequirements(email, choice);
-        if (flag != null && flag) {
-            Integer count = emailMapper.insertEmail(email, username, user_id);
-            if (count == 0) {
-                EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_INSERT);
-            }
-        } else if (flag != null){
-            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.EMAIL_FAILED_TO_MEET_REQUIREMENTS);
-        } else {
-            EmailExceptionEnumerationWrapper.wee(EmailExceptionEnumeration.WRONG_CHOICE);
-        }
+        EmailHelper.UpdateHelper(email, choice, user_id, username, EmailHelper.getUpdateMode("INSERT"), emailMapper);
+    }
+
+    @Override
+    public void updateMail(String email, String choice, Integer user_id, String username) throws EmailException {
+        EmailHelper.UpdateHelper(email, choice, user_id, username, EmailHelper.getUpdateMode("UPDATE"), emailMapper);
     }
 }

@@ -41,8 +41,7 @@ public enum EmailRegexEnumeration {
      */
     public static Boolean matches(String message, String choice) {
         try {
-            EmailRegexEnumeration enumeration = EmailRegexEnumeration.valueOf(choice);
-            return message.matches(enumeration.getRegex());
+            return message.matches(EmailRegexEnumeration.valueOf(choice).getRegex());
         } catch (IllegalArgumentException e) {
             return null;
         }

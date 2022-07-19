@@ -24,4 +24,14 @@ public interface EmailService {
      * @throws EmailException 邮箱添加失败、格式不符、格式选项错误异常
      */
     void insertMail(String email, String choice, Integer user_id, String username) throws EmailException;
+
+    /**
+     * 修改邮箱信息
+     * @param email 邮箱信息
+     * @param choice 邮箱类型
+     * @param user_id 用户唯一标识
+     * @param username 用户名称
+     * @throws EmailException 邮箱修改失败、格式不符、格式选项错误异常
+     */
+    void updateMail(String email, String choice, Integer user_id, String username) throws EmailException;
 }
