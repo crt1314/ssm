@@ -1,11 +1,11 @@
-package com.chrt.ssm.util;
+package com.chrt.ssm.exception.enumeration;
 
 import com.chrt.ssm.exception.EmailException;
 
 /**
  * 封装邮箱可能抛出的异常信息类
  */
-public enum EmailExceptionEnumeration {
+public enum EmailExceptionWrapperEnumeration {
     /**
      * 发送邮箱异常
      */
@@ -44,7 +44,12 @@ public enum EmailExceptionEnumeration {
     /**
      * 邮箱操作模式错误
      */
-    EMAIL_WRONG_MODE("The mode is wrong", 7);
+    EMAIL_WRONG_MODE("The mode is wrong", 7),
+
+    /**
+     * 邮箱操作模式与格式选择错误
+     */
+    EMAIL_WRONG_MODE_AND_CHOICE("The mode and choice are wrong", 8);
 
     /**
      * 异常信息
@@ -56,7 +61,7 @@ public enum EmailExceptionEnumeration {
      * @param message 异常信息
      * @param id 异常索引
      */
-    EmailExceptionEnumeration(String message, Integer id) {
+    EmailExceptionWrapperEnumeration(String message, Integer id) {
         this.message = message;
     }
 

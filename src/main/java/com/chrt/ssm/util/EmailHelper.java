@@ -1,6 +1,7 @@
 package com.chrt.ssm.util;
 
 import com.chrt.ssm.exception.EmailException;
+import com.chrt.ssm.exception.enumeration.EmailExceptionWrapperEnumeration;
 import com.chrt.ssm.mapper.EmailMapper;
 
 /**
@@ -30,7 +31,7 @@ public class EmailHelper {
      * @throws EmailException 邮箱异常
      */
     public static void throwEmailException(int ordinal, Exception e) throws EmailException {
-        EmailExceptionEnumeration.values()[ordinal].throwEmailException(e);
+        EmailExceptionWrapperEnumeration.values()[ordinal].throwEmailException(e);
     }
 
     /**
@@ -39,7 +40,7 @@ public class EmailHelper {
      * @throws EmailException 邮箱异常
      */
     public static void throwEmailException(int ordinal) throws EmailException {
-        EmailExceptionEnumeration.values()[ordinal].throwEmailException();
+        EmailExceptionWrapperEnumeration.values()[ordinal].throwEmailException();
     }
 
     /**
@@ -76,8 +77,10 @@ public class EmailHelper {
             throwEmailException(3);
         } else if (mode == null && flag != null && ordinal != null) {
             throwEmailException(7);
-        } else {
+        } else if (mode != null && flag == null && ordinal == null) {
             throwEmailException(4);
+        } else {
+            throwEmailException(8);
         }
     }
 
