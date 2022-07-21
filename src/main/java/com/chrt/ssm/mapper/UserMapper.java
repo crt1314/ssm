@@ -31,6 +31,33 @@ public interface UserMapper {
      * @return 用户信息
      */
     @ResultMap("getUser")
-    @Select("select id, username, password from jfm_user where id = #{id} and isValid = 1;")
+    @Select("select id, username, password from jfm_user where id = #{id} and isValid = 1")
     User getUserById(Integer id);
+
+    /**
+     * 添加用户信息
+     * @param user 用户
+     * @return 表数据影响条数
+     */
+    @Insert("insert into jfm_user values(null, #{username}, sha(#{password}), now(), now(), 1, null)")
+    Integer addUser(User user);
+
+    /**
+     * 删除用户
+     * @param id 用户唯一标识
+     * @return 表数据影响条数
+     */
+    @Update("update jfm_user set isValid = 0, gmt_modified = now() where id = #{id} and isValid = 1")
+    Integer deleteUserById(Integer id);
+
+    /**
+     * 更新用户信息
+     * @param user 用户信息
+     * @return 表数据影响条数
+     */
+    @Update("update jfm_user set gmt_modified = now() where id = #{id} and isValid = 1")
+    Integer updateUser(User user);
+
+    @Select("select count(username) from jfm_user where username = #{username} and isValid = 1")
+    Integer getUserByUsername(User user);
 }

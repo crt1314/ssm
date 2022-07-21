@@ -68,4 +68,18 @@ public class EmailServiceImpl implements EmailService {
     public void updateMail(String email, String choice, Integer user_id, String username) throws EmailException {
         EmailHelper.UpdateHelper(email, choice, user_id, username, EmailHelper.getUpdateMode("UPDATE"), emailMapper);
     }
+
+    @Override
+    public void deleteMail(String email, String choice, Integer user_id, String username) throws EmailException {
+        EmailHelper.UpdateHelper(email, choice, user_id, username, EmailHelper.getUpdateMode("DELETE"), emailMapper);
+    }
+
+    @Override
+    public void deleteMailWithoutHelp(Integer user_id) throws EmailException {
+        Integer count = emailMapper.getCount(user_id);
+        Integer deleteCount = emailMapper.deleteAll(user_id);
+        if (deleteCount == null || count == null || deleteCount < count) {
+            EmailHelper.throwEmailException(6);
+        }
+    }
 }

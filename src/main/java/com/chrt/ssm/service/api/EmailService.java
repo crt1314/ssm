@@ -34,4 +34,21 @@ public interface EmailService {
      * @throws EmailException 邮箱修改失败、格式不符、格式选项错误异常
      */
     void updateMail(String email, String choice, Integer user_id, String username) throws EmailException;
+
+    /**
+     * 删除邮箱信息
+     * @param email 邮箱信息
+     * @param choice 邮箱类型
+     * @param user_id 用户唯一标识
+     * @param username 用户名称
+     * @throws EmailException 邮箱删除失败、格式不符、格式选项错误异常
+     */
+    void deleteMail(String email, String choice, Integer user_id, String username) throws EmailException;
+
+    /**
+     * 删除邮箱信息
+     * @param user_id 用户唯一标识
+     * @throws EmailException 邮箱删除失败异常
+     */
+    void deleteMailWithoutHelp(Integer user_id) throws EmailException;
 }

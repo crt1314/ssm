@@ -75,4 +75,22 @@ public interface EmailMapper {
             @Param("user_id") Integer user_id,
             @Param("email_type") Integer email_type
     );
+
+    /**
+     * 删除所有邮箱信息
+     * @param user_id 用户唯一标识
+     * @return 表数据受影响条数
+     */
+    @Update("update jfm_email " +
+            "set gmt_modified = now(), isValid = 0 " +
+            "where user_id = #{user_id} and isValid = 1")
+    Integer deleteAll(Integer user_id);
+
+    /**
+     * 获取用户邮箱总数
+     * @param user_id 用户唯一标识
+     * @return 用户邮箱总数
+     */
+    @Select("select count(*) from jfm_email where user_id = #{user_id} and isValid = 1")
+    Integer getCount(Integer user_id);
 }

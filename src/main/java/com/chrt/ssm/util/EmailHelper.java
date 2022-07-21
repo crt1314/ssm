@@ -150,4 +150,20 @@ public class EmailHelper {
                 break;
         }
     }
+
+    /**
+     * 根据email获取类型
+     * @param email 邮箱信息
+     * @return 类型
+     */
+    public static String getChoice(String email) {
+        if (email.endsWith("@163.com")) {
+            return "E163";
+        } else if (email.endsWith("@qq.com")) {
+            return "QQ";
+        } else if (email.endsWith("@vip.163.com") || email.endsWith("@vip.126.com") || email.endsWith("@188.com")) {
+            return "E163VIP";
+        }
+        return null;
+    }
 }

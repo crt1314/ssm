@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>JustForMe - Register</title>
+    <title>JustForYou - Register</title>
+    <link th:href="@{/static/css/jfy_basic.css}" rel="stylesheet">
 </head>
 <body>
-Register
+    <form th:action="@{/realRegister}" method="post">
+        <span th:if="${ErrMsg != null && ErrMsg != ''}" th:text="${ErrMsg}"></span><br/>
+        <label for="username">Username</label>
+        <input type="text" placeholder="Please input username" name="username" required autofocus id="username">
+        <br/>
+        <label for="password">Password</label>
+        <input type="password" placeholder="Please input password" name="password" required id="password">
+        <br/>
+        <input type="submit" value="Register">
+    </form>
 </body>
 </html>
