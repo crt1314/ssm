@@ -59,5 +59,5 @@ public interface UserMapper {
     Integer updateUser(User user);
 
     @Select("select count(username) from jfm_user where username = #{username} and isValid = 1")
-    Integer getUserByUsername(User user);
+    Integer getUserByUsername(String username);
 }

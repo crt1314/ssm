@@ -3,10 +3,7 @@ package com.chrt.ssm.config;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -38,7 +35,7 @@ public class SpringConfig {
      * @return 邮件发送类
      */
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public JavaMailSender javaMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         try (InputStream is = SpringConfig.class.getClassLoader().getResourceAsStream("mail.properties")) {
             Properties properties = new Properties();
@@ -66,7 +63,7 @@ public class SpringConfig {
      * @return Mapper扫描器
      */
     @Bean
-    public MapperScannerConfigurer getMapperScannerConfigurer() {
+    public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setBasePackage("com.chrt.ssm.mapper");
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
@@ -78,8 +75,9 @@ public class SpringConfig {
      * @param dataSource 数据源
      * @return 工厂类
      */
-    @Bean("sqlSessionFactory")
-    public SqlSessionFactoryBean getSqlSessionFactory(DataSource dataSource) {
+    @DependsOn("dataSource")
+    @Bean
+    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         URL configLocation = SpringConfig.class.getClassLoader().getResource("mybatis-config.xml");
         sqlSessionFactoryBean.setConfigLocation(new FileUrlResource(Objects.requireNonNull(configLocation)));
@@ -92,8 +90,9 @@ public class SpringConfig {
      * @param dataSource 数据源
      * @return 事务管理器
      */
+    @DependsOn("dataSource")
     @Bean
-    public TransactionManager getTransactionManager(DataSource dataSource) {
+    public TransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
@@ -102,7 +101,7 @@ public class SpringConfig {
      * @return 数据源
      */
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DataSource dataSource = null;
         try (InputStream is = SpringConfig.class.getClassLoader().getResourceAsStream("db.properties")) {
             Properties properties = new Properties();

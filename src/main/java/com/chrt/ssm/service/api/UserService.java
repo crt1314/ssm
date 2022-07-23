@@ -16,7 +16,7 @@ public interface UserService {
 
     /**
      * 查看用户是否存在
-     * @param user 用户信息
+     * @param username 用户名称
      */
-    void checkUserIfExists(User user) throws UserException;
+    void checkUserIfExists(String username) throws UserException;
 }

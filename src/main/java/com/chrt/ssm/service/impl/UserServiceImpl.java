@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkUserIfExists(User user) throws UserException {
-        UserHelper.checkUser(user, userMapper);
+    public void checkUserIfExists(String username) throws UserException {
+        UserHelper.checkUser(username, userMapper);
     }
 }

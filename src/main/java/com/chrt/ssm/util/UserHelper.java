@@ -48,12 +48,12 @@ public class UserHelper {
 
     /**
      * 检查用户名是否存在
-     * @param user 用户信息
+     * @param username 用户信息
      * @param userMapper 用户持久层
      * @throws UserException 用户已存在、查询失败异常
      */
-    public static void checkUser(User user, UserMapper userMapper) throws UserException {
-        Integer count = userMapper.getUserByUsername(user);
+    public static void checkUser(String username, UserMapper userMapper) throws UserException {
+        Integer count = userMapper.getUserByUsername(username);
         if (count != null && count > 0) {
             throwUserException(0);
         } else if (count == null) {

@@ -3,6 +3,7 @@ package com.chrt.ssm.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -25,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
      * @return Thymeleaf模板解析器
      */
     @Bean
-    public SpringResourceTemplateResolver getSpringTemplateResolver() {
+    public SpringResourceTemplateResolver springTemplateResolver() {
         SpringResourceTemplateResolver springResourceTemplateResolver = new SpringResourceTemplateResolver();
         springResourceTemplateResolver.setPrefix("/WEB-INF/templates/");
         springResourceTemplateResolver.setSuffix(".html");
@@ -40,8 +41,9 @@ public class WebConfig implements WebMvcConfigurer {
      * @param springResourceTemplateResolver Thymeleaf模板解析器
      * @return 模板引擎
      */
+    @DependsOn("springTemplateResolver")
     @Bean
-    public SpringTemplateEngine getSpringTemplateEngine(SpringResourceTemplateResolver springResourceTemplateResolver) {
+    public SpringTemplateEngine springTemplateEngine(SpringResourceTemplateResolver springResourceTemplateResolver) {
         SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
         springTemplateEngine.setTemplateResolver(springResourceTemplateResolver);
         springTemplateEngine.setEnableSpringELCompiler(true);
@@ -53,8 +55,9 @@ public class WebConfig implements WebMvcConfigurer {
      * @param springTemplateEngine 模板引擎
      * @return 视图解析器
      */
+    @DependsOn("springTemplateEngine")
     @Bean
-    public ThymeleafViewResolver getThymeleafViewResolver(SpringTemplateEngine springTemplateEngine) {
+    public ThymeleafViewResolver thymeleafViewResolver(SpringTemplateEngine springTemplateEngine) {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setOrder(1);
         thymeleafViewResolver.setTemplateEngine(springTemplateEngine);
@@ -78,5 +81,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
+        registry.addViewController("/register").setViewName("register");
+        registry.addViewController("/login").setViewName("login");
     }
 }
